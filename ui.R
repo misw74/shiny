@@ -14,7 +14,7 @@ shinyUI(fluidPage(
                        min = 25,
                        max = 1000,
                        value = 1),
-           selectInput("radius", c( "1", "2", "5", "10", "25"), label = "radius"),
+           #selectInput("radius", c( "1", "2", "5", "10", "25"), label = "radius"),
            actionButton("submit", "Simulate Again"),
            br(),
            br(),

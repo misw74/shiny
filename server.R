@@ -1,5 +1,6 @@
 library(shiny)
 
+R <- 10
 SIMULATED <- F
 thePi <- NULL
 
@@ -21,7 +22,7 @@ getPi <- function(runs, r) {
     myRetVal$radius <- as.numeric(r)
     
     myRetVal$xs <- runif(runs,min= -myRetVal$radius ,max= myRetVal$radius )
-    myRetVal$ys <- runif(runs,min= -myRetVal$radius ,max= myRetVal$radius )
+    myRetVal$ys <- runif(runs,min= -myRetVal$radius ,max= myRetVal$radius )      
     
     myRetVal$pi <-  (sum(is.inside(myRetVal$xs,myRetVal$ys,myRetVal$radius))/runs) * 4
     myRetVal$prc <- abs(100*(myRetVal$pi - pi)/pi)
@@ -40,14 +41,14 @@ shinyServer(function(input, output) {
   output$pi <- renderText( 
     {             
       input$submit      
-      getPi( isolate(input$sims) * 1000, isolate(input$radius) )$pi
+      getPi( isolate(input$sims) * 1000, R )$pi
     }     
   )
   
   output$prc <- renderText( 
     { 
       input$submit
-      myPi <- getPi( isolate(input$sims) * 1000, isolate(input$radius) )
+      myPi <- getPi( isolate(input$sims) * 1000, R )
       paste( round(myPi$prc,4), "%")  
     }     
   )
@@ -55,7 +56,7 @@ shinyServer(function(input, output) {
   output$diff <- renderText( 
   {  
     input$submit    
-    myPi <- getPi( isolate(input$sims) * 1000, isolate(input$radius) )
+    myPi <- getPi( isolate(input$sims) * 1000, R )
   
     round(myPi$diff,4)
   }     
@@ -68,7 +69,7 @@ shinyServer(function(input, output) {
     runs <- 0
     
     runs <- isolate(input$sims) * 1000
-    r <- as.numeric(isolate(input$radius))
+    r <- R
     
     if( r > 0 ) {
       myPi <- getPi( runs, r )
